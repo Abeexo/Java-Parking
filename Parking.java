@@ -1,45 +1,43 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Parking {
+class Parking {
     private String name;
     ArrayList<String> parking = new ArrayList<String>();
     ArrayList<String> plate = new ArrayList<String>();
 
     public Parking(String name) {
         this.name = name;
-
     }
 
-    public void addCar(String a) {
-        if (this.plate.contains(a)) {
-            this.parking.add(a);
+    public void addPlateToWhitelist(String plate) {
+        this.plate.add(plate);
+        System.out.println("Plate " + plate + " added to the whitelist.");
+    }
+
+    public void addCar(String newplate) {
+        if (this.plate.contains(newplate)) {
+            this.parking.add(newplate);
+            System.out.println("Car with plate " + newplate + " allowed to enter.");
         } else {
-            System.out.println("\nYOU CAN NOT ENTER! the machine is not in the whitelist");
+            System.out.println("Car with plate " + newplate + " is not in the whitelist. Entry denied.");
         }
-        return;
     }
 
-    public void removeCarAt(String a) {
-        if (this.plate.contains(a)) {
-            this.parking.remove(a);
+    public void removeCarAt(String plate) {
+        if (this.parking.contains(plate)) {
+            this.parking.remove(plate);
+            System.out.println("Car with plate " + plate + " allowed to exit.");
         } else {
-            System.out.println("\nThe car does not exist in the parking lot");
+            System.out.println("Car with plate " + plate + " is not in the parking lot.");
         }
-        return;
     }
 
-    public String toString() {
-        String response = this.name + " [";
-        for (String a : this.parking) {
-            if (this.parking == null) {
-                response += "_,";
-            } else {
-                response += "@,";
-            }
-        }
-        response += "]";
-        return response;
-
+    public ArrayList<String> getWhitelistedPlates() {
+        return this.plate;
     }
 
+    public ArrayList<String> getParkingStatus() {
+        return this.parking;
+    }
 }

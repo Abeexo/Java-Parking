@@ -1,43 +1,55 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Parking p = new Parking("Sample Parking");
 
-        Scanner s = new Scanner(System.in);
-        Parking p = new Parking("boh");
-        System.out.println("how plates do you want in whitelist?:");
-        int list = s.nextInt();
+        System.out.println("How many license plates do you want to add to the whitelist?");
+        int list = getValidInput(scanner);
 
         for (int i = 0; i < list; i++) {
-            System.out.println("Type a whiteplate:");
-            p.plate.add(s.next());
+            System.out.println("Enter a license plate to add to the whitelist:");
+            String plate = scanner.next();
+            p.addPlateToWhitelist(plate);
         }
 
-        System.out.println(p.plate);
+        System.out.println("Whitelisted plates: " + p.getWhitelistedPlates());
 
-        while (true) {
-            System.out.println("\nyou want to let a car in?");
-            String Y = s.next();
-            if (Y.equals("y")) {
-                System.out.println("\nset a plate\n");
-                String newplate = s.next();
-                p.addCar(newplate);
+        boolean continueOperation = true;
+        while (continueOperation) {
+            System.out.println("\nDo you want to allow a car to enter (Y) or exit (N) or quit (Q)?");
+            String input = scanner.next().toUpperCase();
 
-            } else {
-                System.out.println("\nyou want to let a car out?");
-                String x = s.next();
-                if (x.equals("y")) {
-                    System.out.println("\nset a plate\n");
-                    String newplate = s.next();
-                    p.removeCarAt(newplate);
-
-                } else {
-                    System.out.println(p.parking);
-                    return;
-                }
+            switch (input) {
+                case "Y":
+                    System.out.println("Enter the license plate of the car to allow entry:");
+                    String newPlate = scanner.next();
+                    p.addCar(newPlate);
+                    break;
+                case "N":
+                    System.out.println("Enter the license plate of the car to allow exit:");
+                    String exitPlate = scanner.next();
+                    p.removeCarAt(exitPlate);
+                    break;
+                case "Q":
+                    System.out.println("Exiting the system. Current parking status: " + p.getParkingStatus());
+                    continueOperation = false;
+                    break;
+                default:
+                    System.out.println("Invalid input. Please enter Y to allow entry, N to allow exit, or Q to quit.");
+                    break;
             }
-
         }
+    }
 
+    // Helper method to ensure valid integer input
+    private static int getValidInput(Scanner scanner) {
+        while (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a valid number:");
+            scanner.next(); // Clear the invalid input
+        }
+        return scanner.nextInt();
     }
 }
